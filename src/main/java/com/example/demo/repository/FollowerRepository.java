@@ -9,6 +9,5 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface FollowerRepository extends JpaRepository<Follower, Integer>, JpaSpecificationExecutor<Follower> {
-@Query(value = "Select followerid from follower where contenderid = ?1",nativeQuery = true)
-    List<Integer> getAllFollowerByContender(Integer contenderid);
+   List<Follower> findAllFollowerBycontenderid(Citizen citizen);
 }
