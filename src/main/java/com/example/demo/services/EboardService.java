@@ -53,8 +53,7 @@ public class EboardService {
     }
 
     public Idea getIdeaForId(int id) {
-        Optional<Idea> ideaOptional = ideaRepository.findById(id);
-        return ideaOptional.orElseGet(Idea::new);
+        return ideaRepository.findById(id).orElse(new Idea());
     }
 
     public void addIdea(IdeaRequest request) {
