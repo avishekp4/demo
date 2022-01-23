@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Follower;
 import com.example.demo.entity.Idea;
+import com.example.demo.request.Contender;
 import com.example.demo.request.IdeaRequest;
 import com.example.demo.services.EboardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +70,20 @@ public class HttpController {
     @GetMapping("rate/{ideaId}/{citizenId}")
     public void rateIdea(@PathVariable("ideaId") int ideaId, @PathVariable("citizenId") int citizenId, @RequestParam("rating") int rating) {
         eboardService.rateIdea(ideaId, citizenId, rating);
+    }
+
+    @GetMapping("finalrating/{contId}")
+    public int finalRatingContender(@PathVariable("contId") int contId) {
+        return eboardService.finalRatingContender(contId);
+    }
+
+    @GetMapping("averagerating/{ideaId}")
+    public int avarageRating(@PathVariable("ideaId") int ideaID) {
+        return eboardService.averageRating(ideaID);
+    }
+
+    @GetMapping("status")
+    public List<Contender> getEboardStatus() {
+        return eboardService.getEboadStatus();
     }
 }
