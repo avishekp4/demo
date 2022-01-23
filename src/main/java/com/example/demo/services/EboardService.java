@@ -38,8 +38,8 @@ public class EboardService {
         Citizen citizen1;
         citizen1 = citizen.orElse(null);
         List<Idea> ideaList = new ArrayList<>();
-        if(citizen1!= null)
-             ideaList.addAll(ideaRepository.findBycontenderid(citizen1));
+        if (citizen1 != null)
+            ideaList.addAll(ideaRepository.findBycontenderid(citizen1));
         return ideaList;
     }
 
@@ -85,5 +85,18 @@ public class EboardService {
         follower.setFollowerid(citizen);
         follower.setContenderid(contender);
         followerRepository.save(follower);
+    }
+    public Idea updateIdea(Idea newIdea) {
+        return ideaRepository.findById(newIdea.getId())
+                .map(idea -> {
+                    System.out.println(newIdea.getIdeaString());
+                    idea.setIdeaString(newIdea.getIdeaString());
+                    return ideaRepository.save(idea);
+                })
+                .orElseGet(() -> ideaRepository.save(newIdea));
+    }
+
+    public void deleteIdea(int id) {
+        ideaRepository.deleteById(id);
     }
 }
