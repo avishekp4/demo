@@ -33,13 +33,17 @@ public class EboardService {
         citizenRepository.save(citizen);
     }
 
+    public void revokenomination(int id) {
+        Citizen citizen = citizenRepository.getById(id);
+        citizen.setIsContender(false);
+        citizenRepository.save(citizen);
+    }
+
     public List<Idea> getAllIdeaOfContender(int id) {
-        Optional<Citizen> citizen = citizenRepository.findById(id);
-        Citizen citizen1;
-        citizen1 = citizen.orElse(null);
+        Citizen citizen = citizenRepository.findById(id).orElse(null);
         List<Idea> ideaList = new ArrayList<>();
-        if (citizen1 != null)
-            ideaList.addAll(ideaRepository.findBycontenderid(citizen1));
+        if (citizen != null)
+            ideaList.addAll(ideaRepository.findBycontenderid(citizen));
         return ideaList;
     }
 
@@ -47,9 +51,11 @@ public class EboardService {
 
     }
 
-    public List<Integer> getFollowerOfContender(Integer id) {
-        Citizen citizen = citizenRepository.getById(id);
-        return followerRepository.getAllFollowerByContender(id);
+    public List<Follower> getFollowerOfContender(Integer id) {
+        Citizen citizen = citizenRepository.findById(id).orElse(null);
+        if (citizen != null)
+            return followerRepository.findAllFollowerBycontenderid(citizen);
+        return new ArrayList<>();
     }
 
     public Idea getIdeaForId(int id) {
@@ -59,7 +65,6 @@ public class EboardService {
 
     public void addIdea(IdeaRequest request) {
         Idea idea = new Idea();
-        System.out.println("Current post " + request.getIdea() + " id " + request.getCitizenId());
         idea.setIdeaString(request.getIdea());
         Citizen citizen = citizenRepository.getById(request.getCitizenId());
         if (citizen.getIsContender())
@@ -75,7 +80,6 @@ public class EboardService {
         idearating.setCitizen(citizen);
         idearating.setRating(rating);
         idearatingRepository.save(idearating);
-
     }
 
     public void makeFollower(int contid, int citid) {
@@ -86,10 +90,10 @@ public class EboardService {
         follower.setContenderid(contender);
         followerRepository.save(follower);
     }
+
     public Idea updateIdea(Idea newIdea) {
         return ideaRepository.findById(newIdea.getId())
                 .map(idea -> {
-                    System.out.println(newIdea.getIdeaString());
                     idea.setIdeaString(newIdea.getIdeaString());
                     return ideaRepository.save(idea);
                 })
