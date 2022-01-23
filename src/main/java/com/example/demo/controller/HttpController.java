@@ -22,6 +22,21 @@ public class HttpController {
     public Idea getIdeaForId(@PathVariable("id") int id){
         return eboardService.getIdeaForId(id);
     }
+
+    @PostMapping("idea")
+    public void addIdea(@RequestBody IdeaRequest request){
+        eboardService.addIdea(request);
+    }
+
+    @PutMapping("idea/{id}")
+    public Idea updateIdea(@PathVariable("id") int id, @RequestBody Idea newIdea){
+        return eboardService.updateIdea(newIdea);
+    }
+    @DeleteMapping("idea/{id}")
+    void deleteIdea(@PathVariable("id") int id){
+         eboardService.deleteIdea(id);
+    }
+
     @GetMapping("idea/contender/{id}")
     public List<Idea> getAllIdeaOfContender(@PathVariable("id") int id){
         return eboardService.getAllIdeaOfContender(id);
@@ -40,11 +55,6 @@ public class HttpController {
     @GetMapping("follower/citizen/{id}")
     public  void getFollowerOfCitizen(@PathVariable("id") int id){
         eboardService.getFollowerOfCitizen(id);
-    }
-
-    @PostMapping("idea")
-    public void addIdea(@RequestBody IdeaRequest request){
-        eboardService.addIdea(request);
     }
 
     @GetMapping("rate/{ideaId}/{citizenId}")
